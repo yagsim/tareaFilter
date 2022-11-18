@@ -42,15 +42,15 @@ add_action('plugins_loaded', 'crearDB');
 function insertarMalsonantes(){
     global $wpdb;
     $table_name1=$wpdb->prefix .'palabrasMalsonantes';
-    $sql1 = "INSERT INTO $table_name1 (text) VALUES (1,'mierda')";
-    $sql2 = "INSERT INTO $table_name1(text) VALUES (2,'cabrón')";
-    $sql3 = "INSERT INTO $table_name1 (text) VALUES (3,'mamón')";
+    $sql1 = "INSERT INTO $table_name1 (id,text) VALUES (1,'mierda')";
+    $sql2 = "INSERT INTO $table_name1(id,text) VALUES (2,'cabrón')";
+    $sql3 = "INSERT INTO $table_name1 (id,text) VALUES (3,'mamón')";
 
     global $wpdb;
     $table_name2=$wpdb->prefix.'palabrasBonitas';
-    $sql4 = "INSERT INTO $table_name2 (text) VALUES (1,'popo')";
-    $sql5 = "INSERT INTO $table_name2(text) VALUES (2,'malo')";
-    $sql6 = "INSERT INTO $table_name2 (text) VALUES (3,'malisimo')";
+    $sql4 = "INSERT INTO $table_name2 (id,text) VALUES (1,'popo')";
+    $sql5 = "INSERT INTO $table_name2(id,text) VALUES (2,'malo')";
+    $sql6 = "INSERT INTO $table_name2 (id,text) VALUES (3,'malisimo')";
 
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
     dbDelta($sql1);
@@ -68,10 +68,22 @@ function cambiarMalsonantes( $text ){
     $table_name2= $wpdb->prefix . 'palabrasBonitas';
 
 
-       /* $malsonantes=array("mierda","cabrón","mamón");
-        $correctas=array("popo","malo","malo");*/
-    $malsonantes=dbDelta("SELECT text FROM $table_name1",OBJECT);
-    $correctas=dbDelta("SELECT text FROM $table_name2",OBJECT);
+    /*    $malsonantes=array("mierda","cabrón","mamón");
+        $correctas=array("popo","malo","malo");         */
+    $qmalsonantes=$wpdb->get_results("SELECT text FROM $table_name1",OBJECT);
+    $qcorrectas=$wpdb->get_results("SELECT text FROM $table_name2",OBJECT);
+
+     $malsonantes=array();
+    for ($i=0;$i<sizeof($qmalsonantes);$i++){
+        $malsonantes[]=$qmalsonantes[$i]->text;
+    }
+
+    $correctas=array();
+    for ($i=0;$i<sizeof($qcorrectas);$i++){
+        $correctas[]=$qcorrectas[$i]->text;
+    }
+
+
     return str_replace($malsonantes, $correctas, $text);
 }
 
