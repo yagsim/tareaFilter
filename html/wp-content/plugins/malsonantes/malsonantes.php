@@ -46,7 +46,6 @@ function insertarMalsonantes(){
     $sql2 = "INSERT INTO $table_name1(id,text) VALUES (2,'cabrón')";
     $sql3 = "INSERT INTO $table_name1 (id,text) VALUES (3,'mamón')";
 
-    global $wpdb;
     $table_name2=$wpdb->prefix.'palabrasBonitas';
     $sql4 = "INSERT INTO $table_name2 (id,text) VALUES (1,'popo')";
     $sql5 = "INSERT INTO $table_name2(id,text) VALUES (2,'malo')";
